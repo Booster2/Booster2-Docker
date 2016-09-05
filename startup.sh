@@ -14,7 +14,7 @@ do
 	fi
 done
 
-
+echo "log_bin_trust_function_creators=1" >> /etc/mysql/my.cnf
 
 if [ ! -d "/run/mysqld" ]; then
 	mkdir -p /run/mysqld
@@ -45,8 +45,6 @@ else
 	fi
 
 	cat << EOF > $tfile
-SET GLOBAL log_bin_trust_function_creators = 1;
-
 USE mysql;
 FLUSH PRIVILEGES;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
@@ -79,10 +77,16 @@ do
 	fi
 done
 
+/usr/bin/mysqld --user=mysql --console &
+
+
+
+
 mkdir /Booster2
 mkdir /Booster2/sql-gen
 
 cp /booster2/Booster2/sql-gen/standardStuff.sql /Booster2/sql-gen
+
 
 #for entry in /boosterfiles/*
 #do
@@ -90,12 +94,16 @@ cp /booster2/Booster2/sql-gen/standardStuff.sql /Booster2/sql-gen
   java -jar /sunshine/sunshine.jar transform -n "Generate SQL" -p /boosterfiles/ -l /booster2/Booster2/ -i $1
 #done
 
+SQL_FILE_NAME=`basename $1 boo2`generated.sql
+
+mysql -u root < /boosterfiles/$SQL_FILE_NAME
+
+
 echo Starting Tomcat service...
-/usr/local/tomcat/bin/startup.sh
+exec /usr/local/tomcat/bin/catalina.sh run
 echo Tomcat service started.
 
 
-exec /usr/bin/mysqld --user=mysql --console
 
 
 
