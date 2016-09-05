@@ -114,10 +114,10 @@ cd /d2rq/
 sed -i '/^@prefix jdbc: <http:\/\/d2rq.org\/terms\/jdbc\/> ./r d2r-server.conf' /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
 
 echo Starting Tomcat service...
-exec /usr/local/tomcat/bin/catalina.sh run &
+exec /usr/local/tomcat/bin/catalina.sh run 
 echo Tomcat service started.
 
-sh -c "while true; do sleep 1000; done"
+
 
 
 
