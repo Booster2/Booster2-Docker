@@ -107,9 +107,7 @@ cd /d2rq/d2rq-0.8.1/
 
 chmod a+x generate-mapping d2r-server
 
-./generate-mapping -o /boosterfiles/mapping.ttl -d com.mysql.jdbc.Driver -u root -p "" jdbc:mysql://localhost:3306/$DB_NAME
-
-./d2r-server /boosterfiles/mapping.ttl &
+bash ./generate-mapping -o /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl -d com.mysql.jdbc.Driver -u root -p "" jdbc:mysql://localhost:3306/$DB_NAME
 
 echo Starting Tomcat service...
 exec /usr/local/tomcat/bin/catalina.sh run

@@ -11,11 +11,13 @@ ADD gwi.war /booster2/
 ADD Booster2.zip /booster2/
 ADD sunshine.jar /sunshine/
 ADD d2rq-0.8.1.zip /d2rq/
+ADD d2rq.war /d2rq/
 
 
 RUN unzip -d /booster2 /booster2/Booster2.zip 
 RUN unzip -d /d2rq/ /d2rq/d2rq-0.8.1.zip
 RUN mkdir /usr/local/tomcat/webapps/gwi && unzip -d /usr/local/tomcat/webapps/gwi /booster2/gwi.war
+RUN mkdir /usr/local/tomcat/webapps/d2rq && unzip -o -d /usr/local/tomcat/webapps/d2rq /d2rq/d2rq.war
 
 RUN apk --update add mysql mysql-client bash
 
