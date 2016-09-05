@@ -88,20 +88,22 @@ mkdir /Booster2/sql-gen
 cp /booster2/Booster2/sql-gen/standardStuff.sql /Booster2/sql-gen
 
 
-#for entry in /boosterfiles/*
-#do
-  echo Booster file: $1
-  java -jar /sunshine/sunshine.jar transform -n "Generate SQL" -p /boosterfiles/ -l /booster2/Booster2/ -i $1
-#done
+echo Booster file: $1
+java -jar /sunshine/sunshine.jar transform -n "Generate SQL" -p /files/ -l /booster2/Booster2/ -i $1
 
 SQL_FILE_NAME=`basename $1 boo2`generated.sql
 
-mysql -u root < /boosterfiles/$SQL_FILE_NAME
+mysql -u root < /files/$SQL_FILE_NAME
 
-DB_NAME=$(grep -i "^ create database" /boosterfiles/$SQL_FILE_NAME | grep -o "\`[^\`]*\`" | tr -d '`')
+DB_NAME=$(grep -i "^ create database" /files/$SQL_FILE_NAME | grep -o "\`[^\`]*\`" | tr -d '`')
 
 sed -i "s-<dbname>Test</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml 
 
+for f in /files/sql-import/*.sql
+do
+  echo "Processing file $f..."
+  mysql -u root < $f
+done
 
 cd /d2rq/d2rq-0.8.1/
 

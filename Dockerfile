@@ -3,7 +3,7 @@ FROM tomcat:8.5-alpine
 MAINTAINER James Welch <jamesrwelch@gmail.com>
 EXPOSE 8080
 
-VOLUME /boosterfiles
+VOLUME /files
 
 
 ADD gwi.war /booster2/
