@@ -2,6 +2,7 @@
 FROM tomcat:8.5-alpine
 MAINTAINER James Welch <jamesrwelch@gmail.com>
 EXPOSE 8080
+EXPOSE 2020
 
 VOLUME /boosterfiles
 
@@ -9,10 +10,14 @@ VOLUME /boosterfiles
 ADD gwi.war /booster2/
 ADD Booster2.zip /booster2/
 ADD sunshine.jar /sunshine/
+ADD d2rq-0.8.1.zip /d2rq/
+
 
 RUN unzip -d /booster2 /booster2/Booster2.zip 
+RUN unzip -d /d2rq/ /d2rq/d2rq-0.8.1.zip
 RUN mkdir /usr/local/tomcat/webapps/gwi && unzip -d /usr/local/tomcat/webapps/gwi /booster2/gwi.war
-RUN apk --update add mysql mysql-client
+
+RUN apk --update add mysql mysql-client bash
 
 ADD startup.sh /scripts/startup.sh
 

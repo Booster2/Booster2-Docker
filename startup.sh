@@ -102,6 +102,15 @@ DB_NAME=$(grep -i "^ create database" /boosterfiles/$SQL_FILE_NAME | grep -o "\`
 
 sed -i "s-<dbname>Test</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml 
 
+
+cd /d2rq/d2rq-0.8.1/
+
+chmod a+x generate-mapping d2r-server
+
+./generate-mapping -o /boosterfiles/mapping.ttl -d com.mysql.jdbc.Driver -u root -p "" jdbc:mysql://localhost:3306/$DB_NAME
+
+./d2r-server /boosterfiles/mapping.ttl &
+
 echo Starting Tomcat service...
 exec /usr/local/tomcat/bin/catalina.sh run
 echo Tomcat service started.
