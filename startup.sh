@@ -98,7 +98,7 @@ SQL_FILE_NAME=`basename $1 boo2`generated.sql
 
 mysql -u root < /boosterfiles/$SQL_FILE_NAME
 
-DB_NAME=$(grep -i "^ create database" /boosterfiles/*.sql | grep -o "\`[^\`]*\`" | tr -d '`')
+DB_NAME=$(grep -i "^ create database" /boosterfiles/$SQL_FILE_NAME | grep -o "\`[^\`]*\`" | tr -d '`')
 
 sed -i "s-<dbname>Test</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml 
 
