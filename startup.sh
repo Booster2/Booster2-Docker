@@ -77,7 +77,7 @@ do
 	fi
 done
 
-/usr/bin/mysqld --user=mysql --console &
+/usr/bin/mysqld --user=mysql --console --log-bin-trust-function-creators &
 
 
 
