@@ -31,7 +31,7 @@ else
 	mysql_install_db --user=mysql > /dev/null
 
 	if [ "$MYSQL_ROOT_PASSWORD" = "" ]; then
-		MYSQL_ROOT_PASSWORD=`pwgen 16 1`
+		MYSQL_ROOT_PASSWORD=""
 		echo "[i] MySQL root Password: $MYSQL_ROOT_PASSWORD"
 	fi
 
@@ -98,6 +98,9 @@ SQL_FILE_NAME=`basename $1 boo2`generated.sql
 
 mysql -u root < /boosterfiles/$SQL_FILE_NAME
 
+DB_NAME=$(grep -i "^ create database" /boosterfiles/*.sql | grep -o "\`[^\`]*\`" | tr -d '`')
+
+sed -i "s-<dbname>Test</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml 
 
 echo Starting Tomcat service...
 exec /usr/local/tomcat/bin/catalina.sh run

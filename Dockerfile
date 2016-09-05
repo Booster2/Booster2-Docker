@@ -6,13 +6,13 @@ EXPOSE 8080
 VOLUME /boosterfiles
 
 
-ADD gwi.war /usr/local/tomcat/webapps
+ADD gwi.war /booster2/
 ADD Booster2.zip /booster2/
 ADD sunshine.jar /sunshine/
 
 RUN unzip -d /booster2 /booster2/Booster2.zip 
-
-RUN apk --update add mysql mysql-client pwgen
+RUN mkdir /usr/local/tomcat/webapps/gwi && unzip -d /usr/local/tomcat/webapps/gwi /booster2/gwi.war
+RUN apk --update add mysql mysql-client
 
 ADD startup.sh /scripts/startup.sh
 
