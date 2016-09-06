@@ -2,6 +2,7 @@
 <meta charset="utf-8">
 <html>
   <head>
+    <title>D3Sparql</title>
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css"/>
     <script src="lib/d3/d3.v3.min.js"></script>
     <script src="lib/d3sparql.js"></script>
@@ -14,7 +15,7 @@
     function render(json) {
       var config = {
         "charge": -500,
-        "distance": 50,
+        "distance": 150,
         "width": 1000,
         "height": 750,
         "selector": "#result"
@@ -38,7 +39,7 @@
           <button class="btn" type="button" onclick="toggle()">Hide</button>
         </div>
       </form>
-      <textarea id="sparql" class="span9" rows=15>SELECT DISTINCT * WHERE {
+      <textarea id="sparql" class="span9" rows=12 cols=100>SELECT DISTINCT * WHERE {
   ?s ?p  ?o
 }
 LIMIT 10</textarea>

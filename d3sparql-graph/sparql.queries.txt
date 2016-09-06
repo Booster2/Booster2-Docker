@@ -1,0 +1,27 @@
+PREFIX vocab: <http://localhost:8080/d2rq/resource/vocab/>
+SELECT  *
+WHERE {
+   ?comp vocab:Entity_all_Entity_className "Company" .
+?comp vocab:Entity_all_name ?name 
+}
+
+PREFIX vocab: <http://localhost:8080/d2rq/resource/vocab/>
+SELECT DISTINCT  ?company ?type ?tname
+WHERE {
+?type vocab:CompanyType_name ?tname .
+?company vocab:Company_type_CompanyType_entities  ?type .
+}
+
+PREFIX vocab: <http://localhost:8080/d2rq/resource/vocab/>
+SELECT  ?legalrel ?pname  ?cname  
+WHERE {
+   ?legalrel a vocab:LegalRelationship .
+   ?source vocab:Entity_entitySourceRelationships_LegalRelationship_source ?legarel .
+   ?target vocab:Entity_entityTargetRelationships_LegalRelationship_target ?legarel .
+
+   ?target vocab:Entity_entityTargetRelationships_Entity_entityTargetRelationships ?person .
+   ?person vocab:Entity_name ?pname .
+
+   ?source  vocab:Entity_entitySourceRelationships_Entity_entitySourceRelationships ?company .
+   ?company vocab:Entity_name ?cname 
+}
