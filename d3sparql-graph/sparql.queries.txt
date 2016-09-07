@@ -5,7 +5,7 @@ WHERE {
 ?comp vocab:Entity_all_name ?name 
 }
 
-PREFIX vocab: <http://localhost:8080/d2rq/resource/vocab/>
+PREFIX vocab: <http://localhost:80/d2rq/resource/vocab/>
 SELECT DISTINCT  ?company ?type ?tname
 WHERE {
 ?type vocab:CompanyType_name ?tname .
