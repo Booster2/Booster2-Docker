@@ -14,6 +14,7 @@ ADD d2rq.war /d2rq/
 ADD d2r-server.conf /d2rq/
 ADD relfinder.zip /relfinder/
 ADD d3sparql-graph.zip /d3sparql-graph/
+ADD rdfunit.war /rdfunit/
 
 RUN unzip -d /booster2 /booster2/Booster2.zip 
 RUN unzip -d /d2rq/ /d2rq/d2rq-0.8.1.zip
@@ -21,6 +22,7 @@ RUN mkdir /usr/local/tomcat/webapps/gwi && unzip -d /usr/local/tomcat/webapps/gw
 RUN mkdir /usr/local/tomcat/webapps/d2rq && unzip -o -d /usr/local/tomcat/webapps/d2rq /d2rq/d2rq.war
 RUN mkdir /usr/local/tomcat/webapps/relfinder && unzip -o -d /usr/local/tomcat/webapps/relfinder /relfinder/relfinder.zip
 RUN mkdir /usr/local/tomcat/webapps/d3sparql-graph && unzip -o -d /usr/local/tomcat/webapps/d3sparql-graph /d3sparql-graph/d3sparql-graph.zip
+RUN mkdir /usr/local/tomcat/webapps/rdfunit && unzip -o -d /usr/local/tomcat/webapps/rdfunit /rdfunit/rdfunit.war
 
 RUN apk --update add mysql mysql-client bash
 
