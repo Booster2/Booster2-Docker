@@ -107,9 +107,11 @@ done
 
 cd /d2rq/d2rq-0.8.1/
 
-chmod a+x generate-mapping d2r-server
+chmod a+x generate-mapping dump-rdf
 
 bash ./generate-mapping -o /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl -d com.mysql.jdbc.Driver -u root -p "" jdbc:mysql://localhost:3306/$DB_NAME
+
+bash ./dump-rdf -o /usr/local/tomcat/webapps/d2rq/data.nt -b file:/data.nt/ /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
 
 cd /d2rq/
 
