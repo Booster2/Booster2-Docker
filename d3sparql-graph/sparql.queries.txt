@@ -1,4 +1,4 @@
-PREFIX vocab: <http://localhost:8080/d2rq/resource/vocab/>
+PREFIX vocab: <http://localhost:80/d2rq/resource/vocab/>
 SELECT  *
 WHERE {
    ?comp vocab:Entity_all_Entity_className "Company" .
@@ -12,7 +12,7 @@ WHERE {
 ?company vocab:Company_type_CompanyType_entities  ?type .
 }
 
-PREFIX vocab: <http://localhost:8080/d2rq/resource/vocab/>
+PREFIX vocab: <http://localhost:80/d2rq/resource/vocab/>
 SELECT  ?legalrel ?pname  ?cname  
 WHERE {
    ?legalrel a vocab:LegalRelationship .
