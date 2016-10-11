@@ -88,8 +88,9 @@ mkdir /Booster2/sql-gen
 cp /booster2/Booster2/sql-gen/standardStuff.sql /Booster2/sql-gen
 
 
-echo Booster file: $1
+echo "Booster file: $1"
 java -jar /sunshine/sunshine.jar transform -n "Generate SQL" -p /files/ -l /booster2/Booster2/ -i $1
+
 
 SQL_FILE_NAME=`basename $1 boo2`generated.sql
 
@@ -105,24 +106,25 @@ do
   mysql -u root < $f
 done
 
-cd /d2rq/d2rq-0.8.1/
+#use booster to generate a triple map
+echo "generating triple map: $1"
+java -jar /sunshine/sunshine.jar transform -n "Generate Triple Map" -p /files/ -l /booster2/Booster2/ -i $1
 
-chmod a+x generate-mapping dump-rdf
+#set up the dbname for the d2rq server
+sed -i "s-jdbc:mysql://localhost:3306/DBNAME-jdbc:mysql://localhost:3306/${DB_NAME}-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
 
-bash ./generate-mapping -o /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl -d com.mysql.jdbc.Driver -u root -p "" jdbc:mysql://localhost:3306/$DB_NAME
+#set the url/localport in the same file, as needed
+sed -i "s-http://localhost:8081/d2rq/-http://localhost:80/d2rq/-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
+sed -i "s-8081-8080-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
 
-bash ./dump-rdf -o /usr/local/tomcat/webapps/d2rq/data.nt -b file:/data.nt/ /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
-
-cd /d2rq/
-
-sed -i '/^@prefix jdbc: <http:\/\/d2rq.org\/terms\/jdbc\/> ./r d2r-server.conf' /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
+# copy the IPG mapping file to D2RQ's web-inf dir
+cp /files/IPG.mapping.ttl /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
 
 echo Starting Tomcat service...
-exec /usr/local/tomcat/bin/catalina.sh run 
+bash /usr/local/tomcat/bin/catalina.sh run 2>&1 &
 echo Tomcat service started.
 
-
-
+sleep 10 && tail -f /usr/local/tomcat/logs/catalina.*.log
 
 
 
