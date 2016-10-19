@@ -115,10 +115,10 @@ sed -i "s-jdbc:mysql://localhost:3306/DBNAME-jdbc:mysql://localhost:3306/${DB_NA
 
 #set the url/localport in the same file, as needed
 sed -i "s-http://localhost:8081/d2rq/-http://localhost:80/d2rq/-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
-sed -i "s-8081-8080-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
+ca
 
-# copy the IPG mapping file to D2RQ's web-inf dir
-cp /files/IPG.mapping.ttl /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
+# copy the generated mapping file to D2RQ's web-inf dir
+cp /files/`basename $1 boo2`.mapping.ttl /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
 
 echo Starting Tomcat service...
 bash /usr/local/tomcat/bin/catalina.sh run 2>&1 &
