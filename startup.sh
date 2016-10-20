@@ -126,7 +126,7 @@ chmod a+x dump-rdf
 #put a data dump in /files too, incase the users want it
 bash ./dump-rdf -j jdbc:mysql://localhost:3306/${DB_NAME} -u root -p "" -o /files/${TTL_FILE_NAME} -f TURTLE -b file:/${TTL_FILE_NAME}/ /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
 
-bash ./dump-rdf -j jdbc:mysql://localhost:3306/${DB_NAME} -u root -p "" -o /usr/local/tomcat/webapps/d2rq/data.nt -b file:/data.n3/ /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
+bash ./dump-rdf -j jdbc:mysql://localhost:3306/${DB_NAME} -u root -p "" -o /usr/local/tomcat/webapps/d2rq/data.n3 -b file:/data.n3/ /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
 
 
 echo Starting Tomcat service...
