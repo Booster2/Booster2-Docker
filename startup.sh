@@ -116,9 +116,17 @@ sed -i "s-jdbc:mysql://localhost:3306/IPG-jdbc:mysql://localhost:3306/${DB_NAME}
 #set the url/localport in the same file, as needed
 sed -i "s-http://localhost:8081/d2rq/-http://localhost:80/d2rq/-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
 
-
 # copy the generated mapping file to D2RQ's web-inf dir
 cp /files/`basename $1 boo2`mapping.ttl /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
+
+#datadump for rdfunit 
+TTL_FILE_NAME=`basename $1 boo2`datadump.ttl
+cd /d2rq/d2rq/
+chmod a+x dump-rdf 
+#put a data dump in /files too, incase the users want it
+bash ./dump-rdf -j jdbc:mysql://localhost:3306/${DB_NAME} -u root -p "" -o /files/${TTL_FILE_NAME} -f TURTLE -b file:/${TTL_FILE_NAME}/ /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
+
+bash ./dump-rdf -j jdbc:mysql://localhost:3306/${DB_NAME} -u root -p "" -o /usr/local/tomcat/webapps/d2rq/data.nt -b file:/data.n3/ /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
 
 
 echo Starting Tomcat service...
