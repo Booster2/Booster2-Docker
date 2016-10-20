@@ -93,12 +93,18 @@ java -jar /sunshine/sunshine.jar transform -n "Generate SQL" -p /files/ -l /boos
 
 
 SQL_FILE_NAME=`basename $1 boo2`generated.sql
+echo "SQL FILE: $SQL_FILE_NAME"
 
 mysql -u root < /files/$SQL_FILE_NAME
 
-DB_NAME=$(grep -i "^ create database" /files/$SQL_FILE_NAME | grep -o "\`[^\`]*\`" | tr -d '`')
+DB_NAME=$(grep -i "^create database" /files/$SQL_FILE_NAME | grep -o "\`[^\`]*\`" | tr -d '`')
+echo "DB NAME: $DB_NAME"
 
-sed -i "s-<dbname>Test</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml 
+cat /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml
+
+sed -i "s-<dbname>IPG</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml 
+
+cat /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml
 
 for f in /files/sql-import/*.sql
 do
@@ -120,8 +126,14 @@ ca
 # copy the generated mapping file to D2RQ's web-inf dir
 cp /files/`basename $1 boo2`.mapping.ttl /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
 
+# need to re-introduce this, for rdfunit 
+#cd /d2rq/d2rq-0.8.1/
+#chmod a+x generate-mapping dump-rdf 
+#bash ./dump-rdf -j jdbc:mysql://localhost:3306/example -u root -p "" -o /usr/local/tomcat/webapps/d2rq/data.nt -b file:/data.nt/ /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
+
+
 echo Starting Tomcat service...
-bash /usr/local/tomcat/bin/catalina.sh run 2>&1 &
+bash /usr/local/tomcat/bin/catalina.sh run > /dev/null &
 echo Tomcat service started.
 
 sleep 10 && tail -f /usr/local/tomcat/logs/catalina.*.log
