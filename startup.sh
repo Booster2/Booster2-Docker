@@ -93,18 +93,12 @@ java -jar /sunshine/sunshine.jar transform -n "Generate SQL" -p /files/ -l /boos
 
 
 SQL_FILE_NAME=`basename $1 boo2`generated.sql
-echo "SQL FILE: $SQL_FILE_NAME"
 
 mysql -u root < /files/$SQL_FILE_NAME
 
 DB_NAME=$(grep -i "^create database" /files/$SQL_FILE_NAME | grep -o "\`[^\`]*\`" | tr -d '`')
-echo "DB NAME: $DB_NAME"
-
-cat /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml
 
 sed -i "s-<dbname>IPG</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml 
-
-cat /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml
 
 for f in /files/sql-import/*.sql
 do
@@ -117,19 +111,14 @@ echo "generating triple map: $1"
 java -jar /sunshine/sunshine.jar transform -n "Generate Triple Map" -p /files/ -l /booster2/Booster2/ -i $1
 
 #set up the dbname for the d2rq server
-sed -i "s-jdbc:mysql://localhost:3306/DBNAME-jdbc:mysql://localhost:3306/${DB_NAME}-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
+sed -i "s-jdbc:mysql://localhost:3306/IPG-jdbc:mysql://localhost:3306/${DB_NAME}-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
 
 #set the url/localport in the same file, as needed
 sed -i "s-http://localhost:8081/d2rq/-http://localhost:80/d2rq/-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
-ca
+
 
 # copy the generated mapping file to D2RQ's web-inf dir
-cp /files/`basename $1 boo2`.mapping.ttl /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
-
-# need to re-introduce this, for rdfunit 
-#cd /d2rq/d2rq-0.8.1/
-#chmod a+x generate-mapping dump-rdf 
-#bash ./dump-rdf -j jdbc:mysql://localhost:3306/example -u root -p "" -o /usr/local/tomcat/webapps/d2rq/data.nt -b file:/data.nt/ /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
+cp /files/`basename $1 boo2`mapping.ttl /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
 
 
 echo Starting Tomcat service...
