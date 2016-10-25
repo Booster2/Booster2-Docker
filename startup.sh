@@ -100,6 +100,8 @@ DB_NAME=$(grep -i "^create database" /files/$SQL_FILE_NAME | grep -o "\`[^\`]*\`
 
 sed -i "s-<dbname>IPG</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml 
 
+sed -i "s-> James Welch <-> ${DB_NAME} User<-g" /usr/local/tomcat/webapps/gwi/index.html
+
 for f in /files/sql-import/*.sql
 do
   echo "Processing file $f..."
