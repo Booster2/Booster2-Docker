@@ -1,7 +1,7 @@
 # Booster2 Docker install
 FROM tomcat:8.5-alpine
 MAINTAINER James Welch <jamesrwelch@gmail.com>
-EXPOSE 8080
+EXPOSE 8080 3306
 
 VOLUME /files
 
