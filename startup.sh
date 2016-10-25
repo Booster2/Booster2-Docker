@@ -102,6 +102,8 @@ sed -i "s-<dbname>IPG</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/
 
 sed -i "s-> James Welch <-> ${DB_NAME} User<-g" /usr/local/tomcat/webapps/gwi/index.html
 
+ln -s /usr/local/tomcat/webapps/gwi /usr/local/tomcat/webapps/${DB_NAME}
+
 for f in /files/sql-import/*.sql
 do
   echo "Processing file $f..."
