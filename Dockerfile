@@ -26,7 +26,7 @@ RUN mkdir /usr/local/tomcat/webapps/rdfunit && unzip -o -d /usr/local/tomcat/web
 RUN apk --update add mysql mysql-client bash
 
 ADD startup.sh /scripts/startup.sh
-ADD booster-deploy.sh /booster2/startup.sh
+ADD booster-deploy.sh /booster2/booster-deploy.sh
 
 
 RUN mkdir /scripts/pre-exec.d && \

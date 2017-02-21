@@ -14,7 +14,7 @@ DB_NAME=$(grep -i "^create database" /files/$SQL_FILE_NAME | grep -o "\`[^\`]*\`
 
 mkdir /usr/local/tomcat/webapps/${DB_NAME}
 
-unzip -d -o /usr/local/tomcat/webapps/${DB_NAME} /booster2/gwi.war
+unzip -o -d /usr/local/tomcat/webapps/${DB_NAME} /booster2/gwi.war
 
 sed -i "s-<dbname>.*</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/${DB_NAME}/WEB-INF/dbConfig.xml   
 
