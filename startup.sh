@@ -140,6 +140,7 @@ bash ./dump-rdf -j jdbc:mysql://localhost:3306/${DB_NAME} -u root -p "" -o /file
 
 bash ./dump-rdf -j jdbc:mysql://localhost:3306/${DB_NAME} -u root -p "" -o /usr/local/tomcat/webapps/d2rq/data.n3 -b file:/data.n3/ /usr/local/tomcat/webapps/d2rq/WEB-INF/mapping.ttl
 
+cd /
 
 echo Starting Tomcat service...
 bash /usr/local/tomcat/bin/catalina.sh run > /dev/null &

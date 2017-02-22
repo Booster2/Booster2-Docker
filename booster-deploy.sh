@@ -30,6 +30,8 @@ sed -i "s-> James Welch <-> ${DB_NAME} User <-g" /usr/local/tomcat/webapps/${DB_
 
 sed -i "s-gwi-${DB_NAME}-g" /usr/local/tomcat/webapps/${DB_NAME}/js/script.js
 
+rm -rf "$1"
+
         # clean up after yourself, and release your trap
         rm -rf "$lockdir"
         trap - INT TERM EXIT
