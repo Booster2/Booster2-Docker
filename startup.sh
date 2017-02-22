@@ -98,11 +98,19 @@ mysql -u root < /files/$SQL_FILE_NAME
 
 DB_NAME=$(grep -i "^create database" /files/$SQL_FILE_NAME | grep -o "\`[^\`]*\`" | tr -d '`')
 
-sed -i "s-<dbname>IPG</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/gwi/WEB-INF/dbConfig.xml 
+mkdir /usr/local/tomcat/webapps/${DB_NAME} 
 
-sed -i "s-> James Welch <-> ${DB_NAME} User<-g" /usr/local/tomcat/webapps/gwi/index.html
+unzip -d /usr/local/tomcat/webapps/${DB_NAME} /booster2/gwi.war
 
-ln -s /usr/local/tomcat/webapps/gwi /usr/local/tomcat/webapps/${DB_NAME}
+sed -i "s-<dbname>IPG</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/${DB_NAME}/WEB-INF/dbConfig.xml 
+
+sed -i "s-> James Welch <-> ${DB_NAME} User<-g" /usr/local/tomcat/webapps/${DB_NAME}/index.html
+
+sed -i "s-gwi-${DB_NAME}-g" /usr/local/tomcat/webapps/${DB_NAME}/js/script.js
+
+rm -rf /usr/local/tomcat/webapps/ROOT
+
+ls -s /usr/local/tomcat/webapps/ROOT /usr/local/tomcat/webapps/booster
 
 for f in /files/sql-import/*.sql
 do

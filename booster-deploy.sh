@@ -1,6 +1,8 @@
 #!/bin/sh
 echo "$@"
 
+
+
 #copying booster spec to /files
 cp "$1" /files/
 
@@ -19,5 +21,7 @@ unzip -o -d /usr/local/tomcat/webapps/${DB_NAME} /booster2/gwi.war
 sed -i "s-<dbname>.*</dbname>-<dbname>${DB_NAME}</dbname>-g" /usr/local/tomcat/webapps/${DB_NAME}/WEB-INF/dbConfig.xml   
 
 sed -i "s-> James Welch <-> ${DB_NAME} User <-g" /usr/local/tomcat/webapps/${DB_NAME}/index.html 
+
+sed -i "s-gwi-${DB_NAME}-g" /usr/local/tomcat/webapps/${DB_NAME}/js/script.js
 
 
