@@ -1,7 +1,13 @@
 #!/bin/sh
 echo "$@"
 
+lockdir=/var/tmp/booster-deploy
+pidfile=/var/tmp/booster-deploy/pid
 
+if ( mkdir ${lockdir} ) 2> /dev/null; then
+        echo $$ > $pidfile
+        trap 'rm -rf "$lockdir"; exit $?' INT TERM EXIT
+        # do stuff here
 
 #copying booster spec to /files
 cp "$1" /files/
@@ -24,4 +30,10 @@ sed -i "s-> James Welch <-> ${DB_NAME} User <-g" /usr/local/tomcat/webapps/${DB_
 
 sed -i "s-gwi-${DB_NAME}-g" /usr/local/tomcat/webapps/${DB_NAME}/js/script.js
 
+        # clean up after yourself, and release your trap
+        rm -rf "$lockdir"
+        trap - INT TERM EXIT
+else
+        echo "Lock Exists: $lockdir owned by $(cat $pidfile)"
+fi
 
