@@ -31,7 +31,7 @@ ADD booster-deploy.sh /booster2/booster-deploy.sh
 
 RUN mkdir /scripts/pre-exec.d && \
 mkdir /scripts/pre-init.d && \
-chmod -R 755 /scripts
+chmod -R 755 /scripts && \
 chmod -R 755 /booster2
 
 
