@@ -149,10 +149,6 @@ do
   mysql -u root < $f
 done
 
-cd /
-
-touch $1.success
-
 fi
 fi
 
@@ -178,14 +174,12 @@ sed -i "s-gwi-${DB_NAME}-g" /usr/local/tomcat/webapps/${DB_NAME}/js/script.js
 
 rm -rf /usr/local/tomcat/webapps/ROOT
 
-ln -s /usr/local/tomcat/webapps/ROOT /usr/local/tomcat/webapps/booster
-
 #use booster to generate a triple map
 echo "generating triple map: $1"
 java -jar /sunshine/sunshine.jar transform -n "Generate Triple Map" -p /files/ -l /booster2/Booster2/ -i $1
 
 #set up the dbname for the d2rq server
-sed -i "s-jdbc:mysql://localhost:3306/IPG-jdbc:mysql://localhost:3306/${DB_NAME}-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
+sed -i "s-jdbc:mysql://localhost:3306/IPG-jdbc:mysql://localhost:3306/${DB_NAME}?autoReconnect=true-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
 
 #set the url/localport in the same file, as needed
 sed -i "s-http://localhost:8081/d2rq/-http://localhost:80/d2rq/-g" /usr/local/tomcat/webapps/d2rq/WEB-INF/web.xml 
