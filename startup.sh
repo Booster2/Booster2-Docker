@@ -14,7 +14,8 @@ do
 	fi
 done
 
-echo "log_bin_trust_function_creators=1" >> /etc/mysql/my.cnf
+sed -i "s/#log-bin=mysql-bin/log_bin_trust_function_creators=1/g" /etc/mysql/my.cnf 
+#sed -i "s/#skip-networking/skip_name_resolve/g" /etc/mysql/my.cnf 
 
 if [ ! -d "/run/mysqld" ]; then
 	mkdir -p /run/mysqld
@@ -48,9 +49,11 @@ else
 USE mysql;
 FLUSH PRIVILEGES;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
-UPDATE user SET password=PASSWORD("$MYSQL_ROOT_PASSWORD") WHERE user='root';
+UPDATE user SET password=PASSWORD("") WHERE user='root' AND host='%';
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
 UPDATE user SET password=PASSWORD("") WHERE user='root' AND host='localhost';
+CREATE USER 'root'@'%' IDENTIFIED BY '';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 EOF
 
 	if [ "$MYSQL_DATABASE" != "" ]; then
@@ -76,6 +79,8 @@ do
 		. ${i}
 	fi
 done
+
+
 
 /usr/bin/mysqld --user=root --console --log-bin-trust-function-creators &
 
@@ -136,6 +141,8 @@ echo "ERROR : /files/$1 does not exist, create it and try again"
 
 else
 
+
+
 echo "[i] using Booster file: $1"
 java -jar /sunshine/sunshine.jar transform -n "Generate SQL" -p /files/ -l /booster2/Booster2/ -i $1
 
@@ -173,6 +180,10 @@ sed -i "s-> James Welch <-> ${DB_NAME} User<-g" /usr/local/tomcat/webapps/gwi/in
 sed -i "s-gwi-${DB_NAME}-g" /usr/local/tomcat/webapps/${DB_NAME}/js/script.js
 
 rm -rf /usr/local/tomcat/webapps/ROOT
+rm -rf /usr/local/tomcat/webapps/docs
+rm -rf /usr/local/tomcat/webapps/examples
+rm -rf /usr/local/tomcat/webapps/manager
+rm -rf /usr/local/tomcat/webapps/host-manager
 
 #use booster to generate a triple map
 echo "generating triple map: $1"
@@ -198,4 +209,9 @@ bash ./dump-rdf -j jdbc:mysql://localhost:3306/${DB_NAME} -u root -p "" -o /usr/
 
 
 echo Starting Tomcat service...
-bash /usr/local/tomcat/bin/catalina.sh run
+bash /usr/local/tomcat/bin/catalina.sh run > /dev/null &
+echo Tomcat service started.
+
+sleep 10 && tail -f /usr/local/tomcat/logs/catalina.*.log
+
+
